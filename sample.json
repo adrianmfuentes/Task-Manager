@@ -1,0 +1,28 @@
+{
+  "datos_empleo": [
+    {
+      "año": 2019,
+      "tasa_empleo": 62.4,
+      "tasa_ocupacion": 57.3,
+      "poblacion_activa": 23.5
+    },
+    {
+      "año": 2020,
+      "tasa_empleo": 59.8,
+      "tasa_ocupacion": 54.2,
+      "poblacion_activa": 24.1
+    },
+    {
+      "año": 2021,
+      "tasa_empleo": 57.2,
+      "tasa_ocupacion": 52.1,
+      "poblacion_activa": 24.5
+    },
+    {
+      "año": 2022,
+      "tasa_empleo": 59.1,
+      "tasa_ocupacion": 54.8,
+      "poblacion_activa": 24.9
+    }
+  ]
+}
