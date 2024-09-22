@@ -1,142 +1,157 @@
-const express = require('express'); // Import Express to handle HTTP requests and routing
-const routerProjects = express.Router(); // Create a new router object to handle project-related routes
+const express = require('express'); // Import Express for handling HTTP requests and routing
+const routerProjects = express.Router(); // Create a new router object for handling project-related routes
 const database = require("../database"); // Import the database module to interact with the MySQL database
 
-// Route to create a new project
+// Route to create a new project with optional subtasks
 routerProjects.post('/', async (req, res) => {
-    const { name, description, start_date, end_date } = req.body; // Extract project details from the request body
-    const userId = req.infoInApiKey.id; // Retrieve the authenticated user's ID from the API key
+    const { title, description, finishDate, subtasks } = req.body;
+    const userId = req.infoInApiKey.id;
 
-    // Validate that the project name is provided
-    if (!name) {
-        return res.status(400).json({ error: 'Name is required' }); // Return a 400 error if the name is missing
+    // Validate that the title is provided
+    if (!title) {
+        return res.status(400).json({ error: 'Title is required' });
     }
 
     try {
-        database.connect(); // Establish a connection to the database
-
-        // Insert the new project into the database
+        await database.connect(); // Establish a connection to the database
         const result = await database.query(
-            'INSERT INTO projects (user_id, name, description, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
-            [userId, name, description, start_date, end_date]
+            'INSERT INTO projects (user_id, title, description, finishDate) VALUES (?, ?, ?, ?)',
+            [userId, title, description, finishDate]
         );
 
-        database.disConnect(); // Disconnect from the database after the operation
-        res.status(201).json({ insertedId: result.insertId }); // Return the ID of the newly created project
+        const projectId = result.insertId;
 
+        // If subtasks are provided, insert them into the database
+        if (Array.isArray(subtasks) && subtasks.length > 0) {
+            const subtaskValues = subtasks.map(subtask => [projectId, subtask.task, false]);
+            await database.query(
+                'INSERT INTO subtasks (project_id, task, completed) VALUES ?',
+                [subtaskValues]
+            );
+        }
+
+        res.status(201).json({ insertedId: projectId }); // Return the ID of the newly created project
     } catch (error) {
-        database.disConnect(); // Ensure the database is disconnected in case of an error
-        res.status(500).json({ error: 'Database error', details: error }); // Return a 500 error if the database operation fails
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
+    } finally {
+        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
-// Route to retrieve all projects for the authenticated user
+// Route to retrieve all projects for the authenticated user with their subtasks
 routerProjects.get('/', async (req, res) => {
-    const userId = req.infoInApiKey.id; // Retrieve the authenticated user's ID from the API key
+    const userId = req.infoInApiKey.id;
 
     try {
-        database.connect(); // Establish a connection to the database
+        await database.connect(); // Establish a connection to the database
+        const projects = await database.query('SELECT * FROM projects WHERE user_id = ?', [userId]);
 
-        // Fetch all projects for the authenticated user from the database
-        const projects = await database.query(
-            'SELECT * FROM projects WHERE user_id = ?',
-            [userId]
-        );
+        if (projects.length === 0) {
+            return res.json([]); // Return an empty array if no projects are found
+        }
 
-        database.disConnect(); // Disconnect from the database after the operation
-        res.json(projects); // Return the list of projects as a JSON response
+        const projectIds = projects.map(p => p.id);
+        const subtasks = await database.query('SELECT * FROM subtasks WHERE project_id IN (?)', [projectIds]);
 
+        // Combine projects with their respective subtasks
+        const projectsWithSubtasks = projects.map(project => ({
+            ...project,
+            subtasks: subtasks.filter(subtask => subtask.project_id === project.id)
+        }));
+
+        res.json(projectsWithSubtasks); // Return the combined data
     } catch (error) {
-        database.disConnect(); // Ensure the database is disconnected in case of an error
-        res.status(500).json({ error: 'Database error', details: error }); // Return a 500 error if the database operation fails
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
+    } finally {
+        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
 // Route to retrieve a specific project by its ID
 routerProjects.get('/:id', async (req, res) => {
-    const projectId = req.params.id; // Extract the project ID from the request parameters
-    const userId = req.infoInApiKey.id; // Retrieve the authenticated user's ID from the API key
+    const projectId = req.params.id;
+    const userId = req.infoInApiKey.id;
 
     try {
-        database.connect(); // Establish a connection to the database
+        await database.connect(); // Establish a connection to the database
+        const project = await database.query('SELECT * FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
 
-        // Fetch the specific project by ID and user ID
-        const projects = await database.query(
-            'SELECT * FROM projects WHERE id = ? AND user_id = ?',
-            [projectId, userId]
-        );
-
-        database.disConnect(); // Disconnect from the database after the operation
-
-        // Check if the project exists, otherwise return a 404 error
-        if (projects.length === 0) {
+        if (project.length === 0) {
             return res.status(404).json({ error: 'Project not found' });
         }
 
-        res.json(projects[0]); // Return the project details as a JSON response
+        const subtasks = await database.query('SELECT * FROM subtasks WHERE project_id = ?', [projectId]);
 
+        res.json({ ...project[0], subtasks }); // Return the project details along with its subtasks
     } catch (error) {
-        database.disConnect(); // Ensure the database is disconnected in case of an error
-        res.status(500).json({ error: 'Database error', details: error }); // Return a 500 error if the database operation fails
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
+    } finally {
+        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
-// Route to update a specific project by its ID
+// Route to update a specific project by its ID, including subtasks
 routerProjects.put('/:id', async (req, res) => {
-    const projectId = req.params.id; // Extract the project ID from the request parameters
-    const { name, description, start_date, end_date } = req.body; // Extract project details from the request body
-    const userId = req.infoInApiKey.id; // Retrieve the authenticated user's ID from the API key
+    const projectId = req.params.id;
+    const { title, description, finishDate, subtasks } = req.body;
+    const userId = req.infoInApiKey.id;
 
     try {
-        database.connect(); // Establish a connection to the database
-
-        // Update the project details in the database
+        await database.connect(); // Establish a connection to the database
         const result = await database.query(
-            'UPDATE projects SET name = ?, description = ?, start_date = ?, end_date = ? WHERE id = ? AND user_id = ?',
-            [name, description, start_date, end_date, projectId, userId]
+            'UPDATE projects SET title = ?, description = ?, finishDate = ? WHERE id = ? AND user_id = ?',
+            [title, description, finishDate, projectId, userId]
         );
 
-        database.disConnect(); // Disconnect from the database after the operation
-
-        // Check if any rows were affected, otherwise return a 404 error
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Project not found or no changes made' });
         }
 
-        res.json({ updated: true }); // Return a success response indicating the project was updated
+        // Delete existing subtasks before updating
+        await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
 
+        // If new subtasks are provided, insert them into the database
+        if (Array.isArray(subtasks) && subtasks.length > 0) {
+            const subtaskValues = subtasks.map(subtask => [projectId, subtask.task, Boolean(subtask.completed)]);
+            await database.query('INSERT INTO subtasks (project_id, task, completed) VALUES ?', [subtaskValues]);
+        }
+
+        res.json({ updated: true }); // Return a success response
     } catch (error) {
-        database.disConnect(); // Ensure the database is disconnected in case of an error
-        res.status(500).json({ error: 'Database error', details: error }); // Return a 500 error if the database operation fails
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
+    } finally {
+        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
-// Route to delete a specific project by its ID
+// Route to delete a specific project by its ID along with its subtasks
 routerProjects.delete('/:id', async (req, res) => {
-    const projectId = req.params.id; // Extract the project ID from the request parameters
-    const userId = req.infoInApiKey.id; // Retrieve the authenticated user's ID from the API key
+    const projectId = req.params.id;
+    const userId = req.infoInApiKey.id;
 
     try {
-        database.connect(); // Establish a connection to the database
+        await database.connect(); // Establish a connection to the database
 
-        // Delete the project from the database
-        const result = await database.query(
-            'DELETE FROM projects WHERE id = ? AND user_id = ?',
-            [projectId, userId]
-        );
+        // First, delete all subtasks associated with the project
+        await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
 
-        database.disConnect(); // Disconnect from the database after the operation
+        // Then, delete the project itself
+        const result = await database.query('DELETE FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
 
-        // Check if any rows were affected, otherwise return a 404 error
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Project not found' });
         }
 
         res.json({ deleted: true }); // Return a success response indicating the project was deleted
-
     } catch (error) {
-        database.disConnect(); // Ensure the database is disconnected in case of an error
-        res.status(500).json({ error: 'Database error', details: error }); // Return a 500 error if the database operation fails
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
+    } finally {
+        database.disConnect(); // Ensure the database is disconnected
     }
 });
 

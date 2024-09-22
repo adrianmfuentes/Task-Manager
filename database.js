@@ -1,41 +1,61 @@
-const mysql = require('mysql'); // Import MySQL library for interacting with the database
-const util = require('util');   // Import util library for using utility functions, such as promisify
+const mysql = require('mysql2'); // Import mysql2 for native promise support
+const util = require('util');     // Import util for utility functions
 
-// Database object to manage the MySQL connection and queries
-let database = {
-    // Configuration object containing the connection details for the MySQL database
+// Database object to manage MySQL connection and queries
+const database = {
+    // Configuration object for MySQL connection
     configuration: {
-        host: 'localhost',      // Host where the MySQL database is running
-        user: 'root',           // MySQL user with necessary privileges
-        password: '1926',       // Password for the MySQL user
-        database: 'auctions',   // Name of the database to connect to
-        multipleStatements: true, // Allow executing multiple SQL statements in a single query
-        port: 3307              // Port on which MySQL is running (default is 3306, but here it is set to 3307)
+        host: process.env.DB_HOST || 'localhost', // Database host
+        user: process.env.DB_USER || 'root',      // Database user
+        password: process.env.DB_PASSWORD || '1926', // User password
+        database: process.env.DB_NAME || 'task-manager', // Database name
+        multipleStatements: true, // Allow multiple SQL statements in a single query
+        port: process.env.DB_PORT || 3306 // Database port (default 3306)
     },
-    connected: false,            // Flag to track connection status
-    mysqlConnection: null,        // Variable to hold the MySQL connection object
-    query: null,                  // Function for executing queries, which will be promisified
+    connected: false,            // Connection status flag
+    mysqlConnection: null,       // MySQL connection instance
+    query: null,                 // Function for executing queries
 
-    // Method to establish a connection to the database
+    /**
+     * Establishes a connection to the MySQL database.
+     * Sets up the query method to be promisified for async operations.
+     */
     connect() {
-        // Check if already connected; if not, establish a connection
-        if (this.connected == false) {
+        if (!this.connected) {
             this.connected = true; // Update connection status
-            this.mysqlConnection = mysql.createConnection(this.configuration); // Create a MySQL connection using the configuration
-            // Promisify the query method of the connection to allow the use of promises (instead of callbacks)
-            this.query = util.promisify(this.mysqlConnection.query).bind(this.mysqlConnection);
+            this.mysqlConnection = mysql.createConnection(this.configuration); // Create MySQL connection
+            this.query = util.promisify(this.mysqlConnection.query).bind(this.mysqlConnection); // Promisify query method
+
+            // Connect to the database
+            this.mysqlConnection.connect(err => {
+                if (err) {
+                    console.error('Database connection failed: ', err); // Log connection error
+                    this.connected = false; // Reset connection status on failure
+                } else {
+                    console.log('Database connected successfully'); // Log successful connection
+                }
+            });
         }
     },
 
-    // Method to close the database connection
+    /**
+     * Closes the connection to the MySQL database if currently connected.
+     */
     disConnect() {
-        // Check if currently connected; if so, close the connection
-        if (this.connected == true) {
+        // Check if currently connected and if the connection is not already closed
+        if (this.connected && this.mysqlConnection) {
             this.connected = false; // Update connection status
-            this.mysqlConnection.end(); // Close the MySQL connection
+            this.mysqlConnection.end(err => {
+                if (err) {
+                    console.error('Error while disconnecting: ', err); // Log disconnection error
+                } else {
+                    console.log('Database disconnected successfully'); // Log successful disconnection
+                }
+            });
+        } else {
+            console.log('Database was already disconnected or connection object is not set');
         }
-    }
-}
+    }    
+};
 
-// Export the database object to be used in other parts of the application
-module.exports = database;
+module.exports = database; // Export the database object for use in other modules

@@ -1,5 +1,5 @@
 # Logs and debug files
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -11,121 +11,73 @@ lerna-debug.log*
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Directory for instrumented libraries
-lib-cov
-
 # Coverage reports
-coverage
+coverage/
 *.lcov
 
-# nyc test coverage output
-.nyc_output
+# Test coverage output
+.nyc_output/
 
 # Intermediate files from Grunt
-.grunt
+.grunt/
 
 # Bower dependency directory
-bower_components
+bower_components/
 
 # Node.js configuration
 .lock-wscript
 
 # Compiled binary addons
-build/Release
+build/Release/
 
 # Dependency directories
 node_modules/
 jspm_packages/
-
-# Snowpack dependency directory
 web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
 
 # Optional npm cache
-.npm
+.npm/
 
-# Optional eslint cache
+# Caches
 .eslintcache
-
-# Optional stylelint cache
 .stylelintcache
-
-# Microbundle cache directories
 .rpt2_cache/
 .rts2_cache_cjs/
 .rts2_cache_es/
 .rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output files from npm pack
-*.tgz
-
-# Yarn integrity and cache files
-.yarn-integrity
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# Parcel bundler cache
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-out
-
-# Nuxt.js build output
-.nuxt
-dist
-
-# Gatsby cache and build output
 .cache/
-# Uncomment the following line if using Gatsby and not Next.js
-# public
+.parcel-cache/
 
-# VuePress build output and cache
-.vuepress/dist
-.temp
-.cache
+# Environment variable files
+.env
+.env.*.local
 
-# Docusaurus cache and generated files
-.docusaurus
-
-# Serverless framework directories
+# Build outputs
+.next/
+out/
+.nuxt/
+dist/
+.cache/
+.vuepress/dist/
+.temp/
+.docusaurus/
 .serverless/
-
-# FuseBox cache
 .fusebox/
 
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# VSCode test directories
-.vscode-test
-
-# JetBrains IDEs (e.g., WebStorm, IntelliJ)
+# IDE-specific files and folders
 .idea/
+.vscode/
+.vscode-test/
+*.sublime-project
+*.sublime-workspace
 
 # MacOS Finder files
 .DS_Store
@@ -136,13 +88,6 @@ Desktop.ini
 
 # Linux system files
 .trash-*
-
-# IDE-specific files and folders
-*.sublime-project
-*.sublime-workspace
-
-# VSCode workspace storage
-.vscode/
 
 # Vagrant files
 .vagrant/
