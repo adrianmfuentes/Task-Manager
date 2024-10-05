@@ -4,7 +4,7 @@ const database = require("../database"); // Import the database module to intera
 
 // Route to create a new project with optional subtasks
 routerProjects.post('/', async (req, res) => {
-    const { title, description, finishDate, subtasks } = req.body;
+    const { title, description, dateFinish, subtasks } = req.body;
     const userId = req.infoInApiKey.id;
 
     // Validate that the title is provided
@@ -15,8 +15,8 @@ routerProjects.post('/', async (req, res) => {
     try {
         await database.connect(); // Establish a connection to the database
         const result = await database.query(
-            'INSERT INTO projects (user_id, title, description, finishDate) VALUES (?, ?, ?, ?)',
-            [userId, title, description, finishDate]
+            'INSERT INTO projects (user_id, title, description, dateFinish) VALUES (?, ?, ?, ?)',
+            [userId, title, description, dateFinish]
         );
 
         const projectId = result.insertId;
@@ -96,14 +96,14 @@ routerProjects.get('/:id', async (req, res) => {
 // Route to update a specific project by its ID, including subtasks
 routerProjects.put('/:id', async (req, res) => {
     const projectId = req.params.id;
-    const { title, description, finishDate, subtasks } = req.body;
+    const { title, description, dateFinish, subtasks } = req.body;
     const userId = req.infoInApiKey.id;
 
     try {
         await database.connect(); // Establish a connection to the database
         const result = await database.query(
-            'UPDATE projects SET title = ?, description = ?, finishDate = ? WHERE id = ? AND user_id = ?',
-            [title, description, finishDate, projectId, userId]
+            'UPDATE projects SET title = ?, description = ?, dateFinish = ? WHERE id = ? AND user_id = ?',
+            [title, description, dateFinish, projectId, userId]
         );
 
         if (result.affectedRows === 0) {
