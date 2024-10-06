@@ -91,3 +91,5 @@ Desktop.ini
 
 # Vagrant files
 .vagrant/
+
+.env
