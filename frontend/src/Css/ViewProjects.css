@@ -1,0 +1,100 @@
+/* Estilo general para el contenedor principal del componente */
+.projects-container {
+    padding: 10px;
+}
+
+/* Estilo para la tarjeta del encabezado de proyectos */
+.projects-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background-color: #FAF3E0;
+}
+
+/* Estilo para los mensajes de error */
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+/* Estilo para la lista de proyectos */
+.project-list {
+    margin-top: 10px;
+}
+
+/* Estilo para las tarjetas de cada proyecto */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: #FAF3E0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el texto de descripción del proyecto */
+.project-description {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Estilo para la fecha de vencimiento */
+.due-date {
+    font-weight: bold;
+    color: #888;
+}
+
+/* Estilo para los botones de acción del proyecto */
+.project-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+/* Estilo para los botones individuales */
+.project-action-button {
+    flex: 1;
+    margin-right: 8px;
+}
+
+/* Eliminar el margen derecho del último botón */
+.project-action-button:last-child {
+    margin-right: 0;
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .project-card {
+        padding: 12px;
+    }
+
+    .project-actions {
+        flex-direction: column; /* Alinear los botones en columna */
+    }
+
+    .project-action-button {
+        margin-bottom: 10px;
+    }
+
+    .project-action-button:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Estilo para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .project-card {
+        padding: 10px;
+    }
+
+    .project-actions {
+        flex-direction: column;
+    }
+
+    .project-action-button {
+        font-size: 14px; /* Reducir tamaño de fuente en pantallas pequeñas */
+        padding: 8px; /* Reducir padding */
+    }
+}

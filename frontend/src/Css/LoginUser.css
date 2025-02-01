@@ -1,0 +1,60 @@
+/* Estilo general para el contenedor del formulario */
+.login-user-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 10px;
+    background-color: #FAF3E0;
+}
+
+/* Estilo para la tarjeta del formulario */
+.login-card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #D5C3A3;
+    width: 100%;
+    max-width: 500px; /* Limitar el ancho máximo */
+    min-width: 300px; /* Mantener un ancho mínimo */
+}
+
+/* Estilo para los inputs */
+.login-input {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+/* Estilo para el botón */
+.login-button {
+    margin-top: 10px;
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 15px;
+    }
+
+    .login-input {
+        font-size: 16px;
+    }
+
+    .login-button {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 10px;
+    }
+
+    .login-input {
+        font-size: 14px;
+    }
+
+    .login-button {
+        font-size: 14px;
+    }
+}

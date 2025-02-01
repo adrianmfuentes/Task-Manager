@@ -1,0 +1,63 @@
+/* src/Css/CreateUser.css */
+
+/* Contenedor principal del componente */
+.row-container {
+    min-height: 70vh;
+    padding: 10px;
+    background-color: #FAF3E0;
+}
+
+/* Estilo del card que contiene el formulario */
+.user-card {
+    border-radius: 8px; /* Esquinas redondeadas */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    background-color: #D5C3A3;
+    padding: 20px; /* Espaciado interno */
+}
+
+/* Estilo de los campos de entrada */
+.input-field {
+    margin-top: 10px; /* Espaciado superior */
+    width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
+}
+
+/* Estilo para los botones */
+.primary-button {
+    margin-top: 10px; /* Espaciado superior */
+    width: 100%; /* Asegura que el botón ocupe todo el ancho disponible */
+}
+
+/* Estilo para los mensajes de error */
+.error-message {
+    color: red; /* Color rojo para errores */
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .row-container {
+        padding: 10px; /* Menos padding en móviles */
+    }
+
+    .user-card {
+        padding: 15px; /* Menos padding en móviles */
+        margin: 0 auto; /* Centrar el card */
+    }
+
+    .input-field {
+        margin-top: 5px; /* Menos margen en móviles */
+    }
+
+    .primary-button {
+        margin-top: 5px; /* Menos margen en móviles */
+    }
+}
+
+@media (max-width: 480px) {
+    .row-container {
+        padding: 5px; /* Aumentar espacio para pantalla muy pequeña */
+    }
+
+    .user-card {
+        padding: 10px; /* Aumentar espacio en card para pantalla muy pequeña */
+    }
+}

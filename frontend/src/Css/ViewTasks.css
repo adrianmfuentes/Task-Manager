@@ -1,0 +1,101 @@
+/* Estilo general para el contenedor principal del componente */
+.tasks-container {
+    padding: 10px; /* Espaciado interno del contenedor */
+}
+
+/* Estilo para el encabezado de tareas */
+.tasks-header {
+    text-align: center; /* Centrar el texto */
+    font-size: 24px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    margin-bottom: 20px; /* Espaciado inferior */
+    background-color: #FAF3E0;
+}
+
+/* Estilo para los mensajes de error */
+.error-message {
+    color: red; /* Color del mensaje de error */
+    text-align: center; /* Centrar el mensaje de error */
+}
+
+/* Estilo para la lista de tareas */
+.task-list {
+    margin-top: 10px; /* Espaciado superior */
+}
+
+/* Estilo para las tarjetas de cada tarea */
+.task-card {
+    display: flex; /* Flexbox para disposición */
+    flex-direction: column; /* Disposición vertical */
+    justify-content: space-between; /* Espaciado entre elementos */
+    padding: 16px; /* Espaciado interno */
+    background-color: #FAF3E0;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    min-height: 240px;
+}
+
+/* Estilo para el texto de descripción de la tarea */
+.task-description {
+    color: #555; /* Color del texto de la descripción */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para la fecha de vencimiento */
+.due-date {
+    font-weight: bold; /* Negrita */
+    color: #888; /* Color gris */
+}
+
+/* Estilo para los botones de acción de la tarea */
+.task-actions {
+    display: flex; /* Flexbox para disposición */
+    justify-content: space-around; /* Espaciado entre botones */
+    margin-top: 10px; /* Espaciado superior */
+}
+
+/* Estilo para los botones individuales */
+.task-action-button {
+    flex: 1; /* Toma el mismo espacio en el contenedor */
+    margin-right: 8px; /* Espaciado a la derecha */
+}
+
+/* Eliminar el margen derecho del último botón */
+.task-action-button:last-child {
+    margin-right: 0; /* Sin margen derecho */
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .task-card {
+        padding: 12px;
+    }
+
+    .task-actions {
+        flex-direction: column; /* Alinear los botones en columna */
+    }
+
+    .task-action-button {
+        margin-bottom: 10px;
+    }
+
+    .task-action-button:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Estilo para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .task-card {
+        padding: 10px;
+    }
+
+    .task-actions {
+        flex-direction: column;
+    }
+
+    .task-action-button {
+        font-size: 14px; /* Reducir tamaño de texto */
+        padding: 8px; /* Reducir el padding */
+    }
+}

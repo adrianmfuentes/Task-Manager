@@ -1,0 +1,42 @@
+/* src/Css/EditTask.css */
+
+/* Estilo general para el contenedor del componente */
+.edit-task-container {
+    background-color: #FAF3E0;
+    padding: 20px; /* Espaciado interno */
+    min-height: 70vh; /* Altura mínima */
+}
+
+/* Estilo para las alertas de error */
+.alert-message {
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para los campos de entrada */
+.input-field {
+    margin-top: 10px; /* Espaciado superior */
+    width: 100%; /* Asegura que el campo ocupe todo el ancho disponible */
+}
+
+/* Estilo para los mensajes de error */
+.error-text {
+    color: red; /* Color del texto de error */
+    margin-top: 5px; /* Espaciado superior */
+}
+
+/* Estilo para el botón de editar tarea */
+.edit-task-button {
+    margin-top: 10px; /* Espaciado superior */
+    width: 100%; /* Asegura que el botón ocupe todo el ancho disponible */
+}
+
+/* Media queries para mejorar la responsividad */
+@media (max-width: 768px) {
+    .input-field {
+        font-size: 16px; /* Ajusta el tamaño de fuente de los campos */
+    }
+
+    .error-text {
+        font-size: 14px; /* Ajusta el tamaño de fuente de los mensajes de error */
+    }
+}

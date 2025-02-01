@@ -1,0 +1,75 @@
+/* src/Css/Contact.css */
+
+/* Estilo general para el contenedor de contacto */
+.contact-container {
+    padding: 20px; /* Espaciado interno */
+    max-width: 800px; /* Ancho máximo */
+    margin: auto; /* Centra el contenedor */
+    font-family: Arial, sans-serif; /* Fuente para el texto */
+}
+
+/* Estilo para encabezados */
+.contact-container h1 {
+    font-size: 2.5rem; /* Tamaño de fuente para el encabezado principal */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.contact-container h2 {
+    font-size: 1.75rem; /* Tamaño de fuente para los subtítulos */
+    margin-top: 20px; /* Espaciado superior */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para los párrafos */
+.contact-container p {
+    font-size: 1rem; /* Tamaño de fuente para párrafos */
+    line-height: 1.5; /* Espaciado entre líneas */
+    margin: 5px 0; /* Espaciado vertical */
+}
+
+/* Estilo para enlaces */
+.contact-container a {
+    color: #1890ff; /* Color de los enlaces */
+    text-decoration: none; /* Sin subrayado */
+}
+
+.contact-container a:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+/* Estilo para la lista de enlaces sociales */
+.social-links {
+    list-style: none; /* Sin estilo de lista */
+    padding: 0; /* Sin espaciado interno */
+    display: flex; /* Flexbox para disposición horizontal */
+    flex-wrap: wrap; /* Permite el salto de línea en pantallas pequeñas */
+    gap: 10px; /* Espacio entre enlaces */
+}
+
+/* Estilo para los elementos de la lista */
+.social-links li {
+    font-size: 1rem; /* Tamaño de fuente */
+}
+
+/* Estilo responsivo */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 15px; /* Menos espaciado interno en móviles */
+    }
+
+    .contact-container h1 {
+        font-size: 2rem; /* Reducir tamaño del encabezado principal */
+    }
+
+    .contact-container h2 {
+        font-size: 1.5rem; /* Reducir tamaño de los subtítulos */
+    }
+
+    .contact-container p {
+        font-size: 0.9rem; /* Reducir tamaño de los párrafos */
+    }
+
+    .social-links {
+        flex-direction: column; /* Disposición vertical en móviles */
+    }
+}

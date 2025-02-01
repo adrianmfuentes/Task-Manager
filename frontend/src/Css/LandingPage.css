@@ -1,0 +1,80 @@
+.landing-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-color: #FAF3E0;
+  padding: 20px; /* Espaciado para evitar que el contenido se pegue a los bordes */
+}
+
+.landing-page-content {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con opacidad */
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Limita el ancho en pantallas grandes */
+  width: 100%; /* Se asegura de que tome todo el ancho disponible */
+}
+
+.landing-title {
+  font-size: 3rem;
+  color: #1890ff; /* Color primario de Ant Design */
+  margin-bottom: 20px;
+}
+
+.landing-text {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.landing-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas más pequeñas */
+}
+
+.landing-buttons .landing-button {
+  margin: 10px 0;
+  width: 150px; /* Ajusta el ancho de los botones */
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .landing-title {
+      font-size: 2.5rem;
+  }
+
+  .landing-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+  }
+
+  .landing-page-content {
+      padding: 30px;
+  }
+}
+
+/* Estilos para pantallas aún más pequeñas */
+@media (max-width: 480px) {
+  .landing-title {
+      font-size: 2rem;
+  }
+
+  .landing-text {
+      font-size: 1rem;
+      margin-bottom: 20px;
+  }
+
+  .landing-page-content {
+      padding: 20px;
+  }
+
+  .landing-buttons .landing-button {
+      width: 100%; /* Los botones ocupan todo el ancho en pantallas pequeñas */
+  }
+}

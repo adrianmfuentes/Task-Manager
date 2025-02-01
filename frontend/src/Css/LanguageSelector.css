@@ -1,0 +1,47 @@
+/* src/Css/LanguageSelector.css */
+
+/* Estilo para el contenedor del menú de selección de idiomas */
+.language-selector {
+    width: 200px; /* Ancho del menú */
+    max-width: 100%; /* Asegura que no exceda el ancho del contenedor padre */
+    border: 1px solid #d9d9d9; /* Borde del menú */
+    border-radius: 4px; /* Esquinas redondeadas */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    background-color: #ffffff; /* Color de fondo blanco */
+}
+
+/* Estilo para cada elemento del menú */
+.language-selector .ant-menu-item {
+    color: #333; /* Color del texto */
+    transition: background-color 0.3s; /* Transición suave para el color de fondo */
+}
+
+/* Efecto hover en los elementos del menú */
+.language-selector .ant-menu-item:hover {
+    background-color: #e6f7ff; /* Color de fondo al pasar el mouse */
+    color: #1890ff; /* Color del texto al pasar el mouse */
+}
+
+/* Estilo para el menú en dispositivos móviles */
+@media (max-width: 768px) {
+    .language-selector {
+        width: 100%; /* Ancho completo en móviles */
+        border-radius: 0; /* Bordes rectos en móviles */
+    }
+    
+    .language-selector .ant-menu-item {
+        font-size: 16px; /* Aumentar el tamaño del texto para mejor legibilidad */
+        padding: 10px; /* Mayor espacio alrededor del texto */
+    }
+}
+
+/* Media Query para pantallas más pequeñas */
+@media (max-width: 480px) {
+    .language-selector {
+        font-size: 14px; /* Disminuir el tamaño del texto en pantallas pequeñas */
+    }
+
+    .language-selector .ant-menu-item {
+        padding: 8px; /* Reducir el espaciado en pantallas pequeñas */
+    }
+}

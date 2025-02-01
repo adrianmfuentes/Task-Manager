@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: 
+
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+
+Sitemap: http://localhost:3000/sitemap.xml

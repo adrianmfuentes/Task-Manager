@@ -1,0 +1,47 @@
+/* src/Css/TermsOfService.css */
+
+/* Estilo general para el contenedor de los términos del servicio */
+.terms-of-service-container {
+    padding: 20px; /* Espaciado interno */
+    max-width: 800px; /* Ancho máximo */
+    margin: auto; /* Centra el contenedor */
+    font-family: Arial, sans-serif; /* Fuente para el texto */
+}
+
+/* Estilo para encabezados */
+.terms-of-service-container h1 {
+    font-size: 2.5rem; /* Tamaño de fuente para el encabezado principal */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.terms-of-service-container h2 {
+    font-size: 1.75rem; /* Tamaño de fuente para los subtítulos */
+    margin-top: 20px; /* Espaciado superior */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo para los párrafos */
+.terms-of-service-container p {
+    font-size: 1rem; /* Tamaño de fuente para párrafos */
+    line-height: 1.5; /* Espaciado entre líneas */
+    margin: 5px 0; /* Espaciado vertical */
+}
+
+/* Estilo responsivo */
+@media (max-width: 768px) {
+    .terms-of-service-container {
+        padding: 15px; /* Menos espaciado interno en móviles */
+    }
+
+    .terms-of-service-container h1 {
+        font-size: 2rem; /* Reducir tamaño del encabezado principal */
+    }
+
+    .terms-of-service-container h2 {
+        font-size: 1.5rem; /* Reducir tamaño de los subtítulos */
+    }
+
+    .terms-of-service-container p {
+        font-size: 0.9rem; /* Reducir tamaño de los párrafos */
+    }
+}

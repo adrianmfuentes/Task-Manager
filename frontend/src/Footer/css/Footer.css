@@ -1,0 +1,70 @@
+/* Estilo personalizado para el footer */
+.custom-footer {
+    background-color: #001529; /* Fondo oscuro */
+    color: #ffffff; /* Texto blanco */
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Centrar texto */
+}
+
+/* Contenedor para el contenido del footer */
+.footer-content {
+    display: flex; /* Flexbox para el layout */
+    flex-direction: column; /* Apilar elementos verticalmente */
+    align-items: center; /* Alinear elementos horizontalmente */
+}
+
+/* Estilo del texto del footer */
+.footer-text {
+    margin-bottom: 10px; /* Espaciado inferior del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+}
+
+/* Estilo para los enlaces de navegación en el footer */
+.footer-nav {
+    display: flex; /* Flexbox para los enlaces */
+    justify-content: center; /* Centrar los enlaces */
+    gap: 15px; /* Espaciado entre los enlaces */
+}
+
+/* Estilo individual para los enlaces del footer */
+.footer-link {
+    color: #ffffff; /* Texto blanco para los enlaces */
+    text-decoration: none; /* Sin subrayado */
+    transition: color 0.3s; /* Transición suave en hover */
+}
+
+/* Efecto hover para los enlaces */
+.footer-link:hover {
+    color: #3500f7; /* Cambiar el color al pasar el ratón */
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+    .footer-text {
+        font-size: 14px; /* Reducir el tamaño del texto */
+    }
+
+    .footer-nav {
+        flex-direction: column; /* Alinear los enlaces en columna */
+        gap: 10px; /* Reducir el espaciado entre los enlaces */
+    }
+}
+
+/* Media query para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .custom-footer {
+        padding: 15px; /* Reducir el padding en pantallas pequeñas */
+    }
+
+    .footer-text {
+        font-size: 12px; /* Reducir aún más el tamaño del texto */
+    }
+
+    .footer-nav {
+        gap: 8px; /* Reducir más el espaciado entre enlaces */
+    }
+
+    .footer-link {
+        font-size: 12px; /* Reducir el tamaño de los enlaces */
+    }
+}

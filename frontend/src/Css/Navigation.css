@@ -1,0 +1,98 @@
+/* Estilo para la barra de navegación */
+.navigation-header {
+    background-color: #001529; /* Color de fondo de la barra */
+    padding: 0 20px; /* Espaciado horizontal */
+    display: flex;
+    justify-content: space-between; /* Espaciar elementos de la barra */
+    align-items: center;
+}
+
+/* Estilo para el contenedor del menú */
+.navigation-menu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que los elementos del menú se ajusten en varias líneas si es necesario */
+}
+
+/* Estilo para los elementos del menú */
+.navigation-menu .ant-menu-item {
+    margin: 0 10px; /* Espaciado uniforme entre elementos del menú */
+}
+
+/* Estilo para el menú desplegable */
+.ant-dropdown-menu {
+    padding: 10px; /* Espaciado interno del menú desplegable */
+}
+
+/* Estilo para el submenú de idiomas */
+.ant-dropdown-menu-submenu {
+    margin: 5px 0; /* Espaciado entre el submenú y otros elementos */
+}
+
+/* Estilo para el botón del menú */
+.ant-btn {
+    background-color: #1890ff; /* Color de fondo del botón */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto del botón */
+}
+
+/* Hover effect para el botón */
+.ant-btn:hover {
+    background-color: #40a9ff; /* Color de fondo al pasar el cursor */
+}
+
+/* Media Queries para pantallas medianas y pequeñas */
+@media (max-width: 1024px) {
+    /* Ajuste del menú para pantallas medianas */
+    .navigation-menu {
+        justify-content: center; /* Centrar el menú */
+    }
+
+    .navigation-header {
+        padding: 0 10px; /* Reducir padding en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 768px) {
+    /* Ajuste de la barra de navegación para pantallas pequeñas */
+    .navigation-menu {
+        flex-direction: column; /* Colocar los elementos del menú en columnas */
+        align-items: center; /* Centrar elementos del menú */
+    }
+
+    /* Estilo para los elementos del menú en pantallas pequeñas */
+    .navigation-menu .ant-menu-item {
+        margin: 10px 0; /* Aumentar el espaciado entre elementos verticalmente */
+    }
+
+    .navigation-header {
+        flex-direction: column; /* Colocar los elementos del header en columna */
+        padding: 0 5px; /* Reducir más el padding */
+    }
+
+    .ant-btn {
+        width: 100%; /* Botón toma todo el ancho en pantallas pequeñas */
+        margin-top: 10px; /* Agregar espaciado superior */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ajuste adicional para pantallas muy pequeñas */
+    .navigation-header {
+        padding: 0; /* Sin padding en pantallas muy pequeñas */
+    }
+
+    .navigation-menu {
+        flex-direction: column; /* Mantener los elementos en columna */
+    }
+
+    .navigation-menu .ant-menu-item {
+        margin: 5px 0; /* Reducir el espaciado entre los elementos */
+        font-size: 14px; /* Reducir el tamaño del texto */
+    }
+
+    .ant-btn {
+        padding: 10px; /* Espaciado interno del botón más pequeño */
+        font-size: 14px; /* Reducir el tamaño del texto en el botón */
+    }
+}

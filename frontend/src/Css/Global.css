@@ -1,0 +1,13 @@
+/* src/Css/Global.css */
+
+.content-background {
+    background-color: #FAF3E0;
+    min-height: calc(100vh - 64px - 60px); /* Altura total menos la del Header y Footer */
+    padding: 20px 50px;
+}
+
+body {
+    color: black; /* Color del texto */
+    margin: 0; /* Elimina el margen por defecto */
+    font-family: Arial, sans-serif; /* Fuente predeterminada */
+}
