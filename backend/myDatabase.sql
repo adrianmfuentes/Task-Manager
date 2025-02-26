@@ -76,7 +76,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Volcando datos para la tabla task-manager.users: ~0 rows (aproximadamente)
 INSERT INTO `users` (`id`, `email`, `password`) VALUES
-	(1, 'amf13azul@gmail.com', 'pass1234');
+	(1, 'example@gmail.com', 'pass1234'),
+	(2, 'user2@example.com', 'pass5678'),
+	(3, 'user3@example.com', 'pass91011'),
+	(4, 'user4@example.com', 'pass1314'),
+	(5, 'user5@example.com', 'pass1516'),
+	(6, 'user6@example.com', 'pass1718');	
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
