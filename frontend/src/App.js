@@ -48,8 +48,17 @@ function App() {
   }, []); 
 
   const createNotif = (type = "info", msg, placement = "top") => {
-    api[type]({ message: msg, description: msg, placement }); 
+    // Define valid notification types
+    const validTypes = ["info", "success", "error", "warning"];
+    
+    // Check if the type is valid before calling the API
+    if (validTypes.includes(type)) {
+      api[type]({ message: msg, description: msg, placement });
+    } else {
+      console.error(`Invalid notification type: ${type}`);
+    }
   };
+  
 
   const disconnect = async () => {
     const apiKey = localStorage.getItem("apiKey");
@@ -89,16 +98,12 @@ function App() {
       <Layout className='layout'>
         <Header className="navigation-header"> {/* Aplica clase CSS a Header */}
           <div className="navigation-menu"> {/* Contenedor de menú */}
-            <Dropdown overlay={menu} trigger={['click']} placement="bottomLeft">
+            <Dropdown trigger={['click']} placement="bottomLeft" overlay={menu}>
               <Button icon={<MenuOutlined />} />
             </Dropdown>
-            <Menu mode='horizontal' theme='dark' style={{ flex: 1 }}>
-              {menuItems.map(item => (
-                <Menu.Item key={item.key}>
-                  {item.label}
-                </Menu.Item>
-              ))}
-            </Menu>
+
+            {/* Menú horizontal */}
+            <Menu mode="horizontal" theme="dark" style={{ flex: 1 }} items={menuItems} />              
           </div>
         </Header>
 

@@ -1,14 +1,14 @@
 /* Estilo general para el contenedor principal del componente */
 .tasks-container {
-    padding: 10px; /* Espaciado interno del contenedor */
+    padding: 1rem; /* Espaciado interno del contenedor */
 }
 
 /* Estilo para el encabezado de tareas */
 .tasks-header {
     text-align: center; /* Centrar el texto */
-    font-size: 24px; /* Tamaño de fuente */
+    font-size: 1.5rem; /* Tamaño de fuente, ajustado a rem */
     font-weight: bold; /* Negrita */
-    margin-bottom: 20px; /* Espaciado inferior */
+    margin-bottom: 1.25rem; /* Espaciado inferior, ajustado a rem */
     background-color: #FAF3E0;
 }
 
@@ -20,7 +20,7 @@
 
 /* Estilo para la lista de tareas */
 .task-list {
-    margin-top: 10px; /* Espaciado superior */
+    margin-top: 1rem; /* Espaciado superior, ajustado a rem */
 }
 
 /* Estilo para las tarjetas de cada tarea */
@@ -28,41 +28,72 @@
     display: flex; /* Flexbox para disposición */
     flex-direction: column; /* Disposición vertical */
     justify-content: space-between; /* Espaciado entre elementos */
-    padding: 16px; /* Espaciado interno */
+    padding: 1rem; /* Espaciado interno, ajustado a rem */
     background-color: #FAF3E0;
-    border-radius: 8px; /* Bordes redondeados */
+    border-radius: 1rem; /* Bordes redondeados */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
-    min-height: 240px;
+    min-height: 20vh; /* Altura mínima, ajustada a la vista */
+    min-width: 30vw; /* Ancho mínimo, ajustado a la vista */
+    margin-bottom: 1.25rem; /* Espaciado inferior entre tarjetas, ajustado a rem */
 }
 
 /* Estilo para el texto de descripción de la tarea */
 .task-description {
     color: #555; /* Color del texto de la descripción */
-    margin-bottom: 10px; /* Espaciado inferior */
+    margin-bottom: 1rem; /* Espaciado inferior, ajustado a rem */
 }
 
 /* Estilo para la fecha de vencimiento */
 .due-date {
     font-weight: bold; /* Negrita */
     color: #888; /* Color gris */
+    margin-bottom: 1rem;
 }
 
 /* Estilo para los botones de acción de la tarea */
 .task-actions {
     display: flex; /* Flexbox para disposición */
     justify-content: space-around; /* Espaciado entre botones */
-    margin-top: 10px; /* Espaciado superior */
+    margin-top: 1rem; /* Espaciado superior, ajustado a rem */
 }
 
 /* Estilo para los botones individuales */
 .task-action-button {
     flex: 1; /* Toma el mismo espacio en el contenedor */
-    margin-right: 8px; /* Espaciado a la derecha */
+    margin-right: 0.5rem; /* Espaciado a la derecha, ajustado a rem */
+    border: none; /* Eliminar borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 0.5rem 1rem; /* Espaciado interno, ajustado a rem */
+    font-size: 0.875rem; /* Tamaño de fuente, ajustado a rem */
+    cursor: pointer; /* Cursor de puntero */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Eliminar el margen derecho del último botón */
 .task-action-button:last-child {
     margin-right: 0; /* Sin margen derecho */
+}
+
+/* Estilos específicos para cada tipo de botón */
+.task-action-button.complete {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+.task-action-button.edit {
+    background-color: #FFC107; /* Amarillo */
+    color: black;
+}
+
+.task-action-button.delete {
+    background-color: #F44336; /* Rojo */
+    color: white;
+}
+
+/* Efectos al pasar el cursor sobre los botones */
+.task-action-button:hover {
+    opacity: 0.8; /* Reducir opacidad */
 }
 
 /* Media queries para pantallas más pequeñas */

@@ -1,182 +1,182 @@
 /* Global styles */
 body {
-  font-family: Arial, sans-serif; /* Base font family */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  background-color: #f2f2f2; /* Light grey background */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
 }
 
 .layout {
-  min-height: '100vh';
+  min-height: 100vh;
 }
 
 /* Main container for content */
 .main-container {
-  max-width: 800px; /* Maximum width for content */
-  margin: 20px auto; /* Center content horizontally with margin */
-  padding: 20px; /* Inner spacing */
-  background-color: #ffffff; /* White background for content */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 90%;
+  margin: 1.25rem auto; /* aproximadamente 20px */
+  padding: 1.25rem;
+  background-color: #ffffff;
+  border-radius: 0.3125rem; /* 5px */
+  box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
 }
 
 /* Headers */
 h1, h2, h3 {
-  text-align: center; /* Center-align all header text */
-  color: #333; /* Dark grey for better contrast */
+  text-align: center;
+  color: #333;
 }
 
 /* Navigation Bar */
 .navbar {
-  list-style-type: none; /* Remove default list styling */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  overflow: hidden; /* Ensure content stays within navbar */
-  background-color: #000; /* Black background */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
 }
 
 .navbar li {
-  float: left; /* Horizontally align navbar items */
+  float: left;
 }
 
 .navbar li a {
-  display: block; /* Make the link cover the entire li */
-  color: #fff; /* White text */
-  text-align: center; /* Center text within the link */
-  padding: 14px 16px; /* Spacing for clickable area */
-  text-decoration: none; /* Remove underline */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  display: block;
+  color: #fff;
+  text-align: center;
+  padding: 0.875rem 1rem; /* 14px 16px */
+  text-decoration: none;
+  transition: background-color 0.3s;
 }
 
 .navbar li a:hover {
-  background-color: #3500f7; /* Change background on hover */
+  background-color: #3500f7;
 }
 
 /* Centered box for forms or important sections */
 .center-box {
-  max-width: 400px; /* Maximum width for the box */
-  margin: 20px auto; /* Center-align box */
-  padding: 20px; /* Inner spacing */
-  background-color: #f9f9f9; /* Light grey background */
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 5px; /* Rounded corners */
+  max-width: 25rem; /* 400px */
+  margin: 1.25rem auto;
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+  border: 0.0625rem solid #ccc; /* 1px */
+  border-radius: 0.3125rem;
 }
 
 /* Form groups */
 .form-group {
-  margin-bottom: 15px; /* Spacing below each form group */
-  display: flex; /* Flexible layout for form elements */
+  margin-bottom: 0.9375rem; /* 15px */
+  display: flex;
 }
 
 /* Input fields */
 input {
-  padding: 10px; /* Inner spacing */
-  border: 1px solid #ccc; /* Light grey border */
-  width: 100%; /* Full-width input fields */
-  border-radius: 3px; /* Slight rounding for input edges */
+  padding: 0.625rem; /* 10px */
+  border: 0.0625rem solid #ccc;
+  width: 100%;
+  border-radius: 0.1875rem; /* 3px */
 }
 
 /* Button styles */
 button {
-  padding: 10px 20px; /* Inner spacing */
-  background-color: #4CAF50; /* Green background */
-  color: #fff; /* White text */
-  border: none; /* No border */
-  border-radius: 3px; /* Slight rounding for button edges */
-  cursor: pointer; /* Pointer cursor on hover */
-  width: 100%; /* Full-width button */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049;
 }
 
 /* Error messages */
 .errorMessage {
-  text-align: center; /* Center-align error messages */
-  color: red; /* Red text for errors */
+  text-align: center;
+  color: red;
 }
 
 .errorForm {
-  color: red; /* Red text for form validation errors */
+  color: red;
 }
 
 /* Notification box */
 .notification {
-  position: relative; /* For positioning close button */
-  background-color: #ffffff; /* White background */
-  border: 1px solid gray; /* Gray border */
-  color: gray; /* Grey text */
-  padding: 10px; /* Inner spacing */
-  margin-bottom: 10px; /* Spacing below notification */
-  border-radius: 4px; /* Slight rounding for notification */
+  position: relative;
+  background-color: #ffffff;
+  border: 0.0625rem solid gray;
+  color: gray;
+  padding: 0.625rem;
+  margin-bottom: 0.625rem;
+  border-radius: 0.25rem;
 }
 
 /* Close button within the notification */
 .close-btn {
-  position: absolute; /* Position close button within the notification */
-  top: 5px; /* Position from top */
-  right: 5px; /* Position from right */
-  font-size: 14px; /* Font size */
-  color: #999; /* Grey color for the close button */
-  cursor: pointer; /* Pointer cursor on hover */
+  position: absolute;
+  top: 0.3125rem;
+  right: 0.3125rem;
+  font-size: 0.875rem;
+  color: #999;
+  cursor: pointer;
 }
 
 /* List of tasks */
 .task-list {
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center-align item list content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .task-list h2 {
-  text-align: center; /* Center-align header */
-  width: 100%; /* Full width for headers */
+  text-align: center;
+  width: 100%;
 }
 
 /* Container for tasks */
 .task-container {
-  display: flex; /* Use flexbox for layout */
-  flex-wrap: wrap; /* Wrap items on smaller screens */
-  justify-content: center; /* Center-align items */
-  width: 100%; /* Full width */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 
 /* Individual task box */
 .task {
-  width: 300px; /* Fixed width for tasks */
-  margin: 10px; /* Spacing around each task */
-  padding: 10px; /* Inner spacing */
-  background-color: #ffffff; /* White background */
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 5px; /* Slight rounding for edges */
-  transition: transform 0.2s; /* Smooth transition for hover effect */
+  width: 18.75rem; /* 300px */
+  margin: 0.625rem;
+  padding: 0.625rem;
+  background-color: #ffffff;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.3125rem;
+  transition: transform 0.2s;
 }
 
 .task:hover {
-  transform: scale(1.02); /* Slight zoom on hover */
+  transform: scale(1.02);
 }
 
 /* Item content styling */
 .task .title {
-  text-align: center; /* Center-align title */
-  font-weight: bold; /* Bold text for titles */
+  text-align: center;
+  font-weight: bold;
 }
 
 .task .description,
 .item .date {
-  font-weight: normal; /* Normal weight for other text */
-  margin-left: 10px; /* Left margin for spacing */
-  text-align: left; /* Left-align for content */
+  font-weight: normal;
+  margin-left: 0.625rem;
+  text-align: left;
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) { /* 600px */
   .main-container {
-    padding: 10px; /* Adjust padding for smaller screens */
+    padding: 0.625rem;
   }
   .task {
-    width: 100%; /* Full width for tasks on smaller screens */
+    width: 100%;
   }
 }

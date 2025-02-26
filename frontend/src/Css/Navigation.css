@@ -1,98 +1,85 @@
-/* Estilo para la barra de navegación */
+/* ===================== */
+/* Navbar (redimensionable) */
+/* ===================== */
+
 .navigation-header {
-    background-color: #001529; /* Color de fondo de la barra */
-    padding: 0 20px; /* Espaciado horizontal */
+    background-color: #001529;
+    padding: 0 1.25rem; /* 20px */
     display: flex;
-    justify-content: space-between; /* Espaciar elementos de la barra */
+    justify-content: space-between;
     align-items: center;
 }
-
-/* Estilo para el contenedor del menú */
+  
 .navigation-menu {
     display: flex;
     align-items: center;
-    flex-wrap: wrap; /* Permite que los elementos del menú se ajusten en varias líneas si es necesario */
+    flex-wrap: wrap;
+    width: 100%;
 }
-
-/* Estilo para los elementos del menú */
+  
 .navigation-menu .ant-menu-item {
-    margin: 0 10px; /* Espaciado uniforme entre elementos del menú */
+    margin: 0 0.625rem;
 }
-
-/* Estilo para el menú desplegable */
+  
 .ant-dropdown-menu {
-    padding: 10px; /* Espaciado interno del menú desplegable */
+    padding: 0.625rem;
 }
-
-/* Estilo para el submenú de idiomas */
+  
 .ant-dropdown-menu-submenu {
-    margin: 5px 0; /* Espaciado entre el submenú y otros elementos */
+    margin: 0.3125rem 0;
 }
-
-/* Estilo para el botón del menú */
+  
 .ant-btn {
-    background-color: #1890ff; /* Color de fondo del botón */
-    border: none; /* Sin borde */
-    color: white; /* Color del texto del botón */
+    background-color: #1890ff;
+    border: none;
+    color: white;
 }
-
-/* Hover effect para el botón */
+  
 .ant-btn:hover {
-    background-color: #40a9ff; /* Color de fondo al pasar el cursor */
+    background-color: #40a9ff;
 }
-
-/* Media Queries para pantallas medianas y pequeñas */
-@media (max-width: 1024px) {
-    /* Ajuste del menú para pantallas medianas */
+  
+/* Responsive navbar adjustments */
+@media (max-width: 64rem) { /* 1024px */
     .navigation-menu {
-        justify-content: center; /* Centrar el menú */
+      justify-content: center;
     }
-
     .navigation-header {
-        padding: 0 10px; /* Reducir padding en pantallas más pequeñas */
+      padding: 0 0.625rem;
     }
 }
-
-@media (max-width: 768px) {
-    /* Ajuste de la barra de navegación para pantallas pequeñas */
+  
+@media (max-width: 48rem) { /* 768px */
     .navigation-menu {
-        flex-direction: column; /* Colocar los elementos del menú en columnas */
-        align-items: center; /* Centrar elementos del menú */
+      flex-direction: column;
+      align-items: center;
     }
-
-    /* Estilo para los elementos del menú en pantallas pequeñas */
     .navigation-menu .ant-menu-item {
-        margin: 10px 0; /* Aumentar el espaciado entre elementos verticalmente */
+      margin: 0.625rem 0;
     }
-
     .navigation-header {
-        flex-direction: column; /* Colocar los elementos del header en columna */
-        padding: 0 5px; /* Reducir más el padding */
+      flex-direction: column;
+      padding: 0 0.3125rem;
     }
-
     .ant-btn {
-        width: 100%; /* Botón toma todo el ancho en pantallas pequeñas */
-        margin-top: 10px; /* Agregar espaciado superior */
+      width: 100%;
+      margin-top: 0.625rem;
     }
 }
-
-@media (max-width: 480px) {
-    /* Ajuste adicional para pantallas muy pequeñas */
+  
+@media (max-width: 30rem) { /* 480px */
     .navigation-header {
-        padding: 0; /* Sin padding en pantallas muy pequeñas */
+      padding: 0;
     }
-
     .navigation-menu {
-        flex-direction: column; /* Mantener los elementos en columna */
+      flex-direction: column;
     }
-
     .navigation-menu .ant-menu-item {
-        margin: 5px 0; /* Reducir el espaciado entre los elementos */
-        font-size: 14px; /* Reducir el tamaño del texto */
+      margin: 0.3125rem 0;
+      font-size: 0.875rem;
     }
-
     .ant-btn {
-        padding: 10px; /* Espaciado interno del botón más pequeño */
-        font-size: 14px; /* Reducir el tamaño del texto en el botón */
+      padding: 0.625rem;
+      font-size: 0.875rem;
     }
 }

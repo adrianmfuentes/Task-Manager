@@ -147,11 +147,10 @@ const TasksComp = ({ createNotification }) => {
                                 <Button
                                     onClick={() => deleteTask(task.id)}
                                     icon={<DeleteOutlined />}
-                                    danger
                                     aria-label={`Delete ${task.title}`}
-                                    className="task-action-button"
+                                    className="task-action-button delete" // Añadido la clase 'delete'
                                 >
-                                    {t("Delete")} {/* Usa la traducción */}
+                                    {t("Delete")} {/* Traducción del texto */}
                                 </Button>
                             </div>
                         </Card>
