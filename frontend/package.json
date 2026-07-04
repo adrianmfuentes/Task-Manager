@@ -26,7 +26,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
+  },
+  "overrides": {
+    "nth-check": "^2.1.1",
+    "underscore": "^1.13.8",
+    "serialize-javascript": "^7.0.7",
+    "webpack-dev-server": "^5.2.5",
+    "uuid": "^11.1.1",
+    "@tootallnate/once": "^2.0.1",
+    "resolve-url-loader": "^5.0.0"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +56,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "patch-package": "^8.0.0"
+  }
 }
