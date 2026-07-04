@@ -2,23 +2,33 @@ const express = require('express'); // Import Express to handle HTTP requests an
 const routerSubtasks = express.Router(); // Create a new router object for subtask-related routes
 const database = require("../database"); // Import the database module to interact with the MySQL database
 
+// Confirms the project belongs to the authenticated user before letting them
+// touch its subtasks.
+async function assertOwnsProject(projectId, userId) {
+    const projects = await database.query('SELECT id FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
+    return projects.length > 0;
+}
+
 // Route to create a new subtask within a project
 routerSubtasks.post('/:projectId/subtasks', async (req, res) => {
-    const { title } = req.body; // Extract subtask title from the request body
+    const { task } = req.body; // Extract subtask text from the request body
     const projectId = req.params.projectId; // Extract the project ID from the request parameters
+    const userId = req.infoInApiKey.id;
 
-    // Validate that the subtask title is provided
-    if (!title) {
-        return res.status(400).json({ error: 'Title is required' }); // Return a 400 error if the title is missing
+    // Validate that the subtask text is provided
+    if (!task) {
+        return res.status(400).json({ error: 'Task is required' }); // Return a 400 error if the text is missing
     }
 
     try {
-        await database.connect(); // Establish a connection to the database
+        if (!(await assertOwnsProject(projectId, userId))) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
         // Insert the new subtask into the database
         const result = await database.query(
-            'INSERT INTO subtasks (project_id, title) VALUES (?, ?)',
-            [projectId, title]
+            'INSERT INTO subtasks (project_id, task) VALUES (?, ?)',
+            [projectId, task]
         );
 
         // Send success response with the new subtask ID
@@ -27,17 +37,18 @@ routerSubtasks.post('/:projectId/subtasks', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        await database.disConnect(); // Ensure the database connection is closed
     }
 });
 
 // Route to retrieve all subtasks for a specific project
 routerSubtasks.get('/:projectId/subtasks', async (req, res) => {
     const projectId = req.params.projectId; // Extract the project ID from the request parameters
+    const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
+        if (!(await assertOwnsProject(projectId, userId))) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
         // Fetch all subtasks for the specified project from the database
         const subtasks = await database.query(
@@ -51,8 +62,6 @@ routerSubtasks.get('/:projectId/subtasks', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        await database.disConnect(); // Ensure the database connection is closed
     }
 });
 
@@ -61,13 +70,16 @@ routerSubtasks.put('/:projectId/subtasks/:id', async (req, res) => {
     const subtaskId = req.params.id; // Extract the subtask ID from the request parameters
     const { task, completed } = req.body; // Extract the updated subtask details from the request body
     const projectId = req.params.projectId; // Extract the project ID from the request parameters
+    const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
+        if (!(await assertOwnsProject(projectId, userId))) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
         // Update the subtask details in the database
         const result = await database.query(
-            'UPDATE subtasks SET title = ?, completed = ? WHERE id = ? AND project_id = ?',
+            'UPDATE subtasks SET task = COALESCE(?, task), completed = COALESCE(?, completed) WHERE id = ? AND project_id = ?',
             [task, completed, subtaskId, projectId]
         );
 
@@ -82,8 +94,6 @@ routerSubtasks.put('/:projectId/subtasks/:id', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        await database.disConnect(); // Ensure the database connection is closed
     }
 });
 
@@ -91,9 +101,12 @@ routerSubtasks.put('/:projectId/subtasks/:id', async (req, res) => {
 routerSubtasks.delete('/:projectId/subtasks/:id', async (req, res) => {
     const subtaskId = req.params.id; // Extract the subtask ID from the request parameters
     const projectId = req.params.projectId; // Extract the project ID from the request parameters
+    const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
+        if (!(await assertOwnsProject(projectId, userId))) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
         // Delete the subtask from the database
         const result = await database.query(
@@ -112,8 +125,6 @@ routerSubtasks.delete('/:projectId/subtasks/:id', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        await database.disConnect(); // Ensure the database connection is closed
     }
 });
 

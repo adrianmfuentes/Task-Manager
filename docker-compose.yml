@@ -1,0 +1,75 @@
+# Production stack: optimized images (compiled backend deps, static frontend
+# bundle served by nginx), no source bind mounts.
+#
+# Build locally:
+#   cp .env.example .env   # set real DB_PASSWORD / JWT_SECRET first!
+#   docker compose up -d --build
+#
+# Or pull pre-built images published by the docker-publish CI workflow:
+#   docker compose pull && docker compose up -d
+#
+# For local development with hot reload, use docker-compose.dev.yml instead.
+
+name: task-manager
+
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-changeme}
+      MARIADB_DATABASE: ${DB_NAME:-task-manager}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/myDatabase.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  backend:
+    image: ${BACKEND_IMAGE:-ghcr.io/adrianmfuentes/task-manager-backend:latest}
+    build:
+      context: ./backend
+      target: production
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-changeme}
+      DB_NAME: ${DB_NAME:-task-manager}
+      DB_PORT: 3306
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-12h}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/adrianmfuentes/task-manager-frontend:latest}
+    build:
+      context: ./frontend
+      target: production
+      args:
+        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL:-http://localhost:4000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+
+volumes:
+  db_data:

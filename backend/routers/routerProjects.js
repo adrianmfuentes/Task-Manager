@@ -13,7 +13,6 @@ routerProjects.post('/', async (req, res) => {
     }
 
     try {
-        await database.connect(); // Establish a connection to the database
         const result = await database.query(
             'INSERT INTO projects (user_id, title, description, dateFinish) VALUES (?, ?, ?, ?)',
             [userId, title, description, dateFinish]
@@ -34,8 +33,6 @@ routerProjects.post('/', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
@@ -44,7 +41,6 @@ routerProjects.get('/', async (req, res) => {
     const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
         const projects = await database.query('SELECT * FROM projects WHERE user_id = ?', [userId]);
 
         if (projects.length === 0) {
@@ -64,8 +60,6 @@ routerProjects.get('/', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
@@ -75,7 +69,6 @@ routerProjects.get('/:id', async (req, res) => {
     const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
         const project = await database.query('SELECT * FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
 
         if (project.length === 0) {
@@ -88,43 +81,47 @@ routerProjects.get('/:id', async (req, res) => {
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
-// Route to update a specific project by its ID, including subtasks
+// Route to update a specific project by its ID, including subtasks. Only
+// fields present in the body are changed, and subtasks are only replaced
+// when a subtasks array is explicitly sent (so a status-only update doesn't
+// wipe the checklist).
 routerProjects.put('/:id', async (req, res) => {
     const projectId = req.params.id;
-    const { title, description, dateFinish, subtasks } = req.body;
+    const { title, description, dateFinish, subtasks, completed } = req.body;
     const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
         const result = await database.query(
-            'UPDATE projects SET title = ?, description = ?, dateFinish = ? WHERE id = ? AND user_id = ?',
-            [title, description, dateFinish, projectId, userId]
+            `UPDATE projects SET
+                title = COALESCE(?, title),
+                description = COALESCE(?, description),
+                dateFinish = COALESCE(?, dateFinish),
+                completed = COALESCE(?, completed)
+             WHERE id = ? AND user_id = ?`,
+            [title, description, dateFinish, completed, projectId, userId]
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Project not found or no changes made' });
+            return res.status(404).json({ error: 'Project not found' });
         }
 
-        // Delete existing subtasks before updating
-        await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
+        // Replace subtasks only when a new list was explicitly provided
+        if (Array.isArray(subtasks)) {
+            await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
 
-        // If new subtasks are provided, insert them into the database
-        if (Array.isArray(subtasks) && subtasks.length > 0) {
-            const subtaskValues = subtasks.map(subtask => [projectId, subtask.task, Boolean(subtask.completed)]);
-            await database.query('INSERT INTO subtasks (project_id, task, completed) VALUES ?', [subtaskValues]);
+            if (subtasks.length > 0) {
+                const subtaskValues = subtasks.map(subtask => [projectId, subtask.task, Boolean(subtask.completed)]);
+                await database.query('INSERT INTO subtasks (project_id, task, completed) VALUES ?', [subtaskValues]);
+            }
         }
 
         res.json({ updated: true }); // Return a success response
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        database.disConnect(); // Ensure the database is disconnected
     }
 });
 
@@ -134,24 +131,19 @@ routerProjects.delete('/:id', async (req, res) => {
     const userId = req.infoInApiKey.id;
 
     try {
-        await database.connect(); // Establish a connection to the database
-
-        // First, delete all subtasks associated with the project
-        await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
-
-        // Then, delete the project itself
-        const result = await database.query('DELETE FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
-
-        if (result.affectedRows === 0) {
+        // Only touch subtasks/delete the project if it actually belongs to this user
+        const project = await database.query('SELECT id FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
+        if (project.length === 0) {
             return res.status(404).json({ error: 'Project not found' });
         }
+
+        await database.query('DELETE FROM subtasks WHERE project_id = ?', [projectId]);
+        await database.query('DELETE FROM projects WHERE id = ? AND user_id = ?', [projectId, userId]);
 
         res.json({ deleted: true }); // Return a success response indicating the project was deleted
     } catch (error) {
         console.error(error); // Log the error for debugging
         res.status(500).json({ error: 'Database error', details: error.message }); // Return a 500 error if the database operation fails
-    } finally {
-        database.disConnect(); // Ensure the database is disconnected
     }
 });
 

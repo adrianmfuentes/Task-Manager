@@ -1,0 +1,12 @@
+# Environment variables
+.env
+.env.*.local
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml

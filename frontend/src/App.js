@@ -1,8 +1,8 @@
 import 'antd/dist/reset.css';
 import React, { useEffect, useState, Suspense } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import { Layout, Menu, notification, Dropdown, Button } from 'antd';
-import { Content, Header } from 'antd/es/layout/layout';
+import { Content, Header } from 'antd/lib/layout/layout';
 import { MenuOutlined } from '@ant-design/icons';
 
 import CreateUserComp from './Components/CreateUserComp';
@@ -35,11 +35,10 @@ function App() {
     const apiKey = localStorage.getItem("apiKey");
     if (apiKey) setLogin(true); 
 
-    const handleBeforeUnload = async (event) => {
+    const handleBeforeUnload = () => {
       if (apiKey) {
-        await fetch(`${backendUrl}/user/disconnect?apiKey=${apiKey}`); 
-        localStorage.removeItem("apiKey"); 
-        setLogin(false); 
+        // keepalive lets the request outlive the page unload, unlike a plain fetch
+        fetch(`${backendUrl}/users/disconnect?apiKey=${apiKey}`, { keepalive: true });
       }
     };
 
@@ -63,10 +62,12 @@ function App() {
   const disconnect = async () => {
     const apiKey = localStorage.getItem("apiKey");
     if (apiKey) {
-      await fetch(`${backendUrl}/user/disconnect?apiKey=${apiKey}`); 
-      localStorage.removeItem("apiKey"); 
-      setLogin(false); 
-      navigate("/login"); 
+      await fetch(`${backendUrl}/users/disconnect?apiKey=${apiKey}`);
+      localStorage.removeItem("apiKey");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("email");
+      setLogin(false);
+      navigate("/login");
     }
   };
 
@@ -122,6 +123,7 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
         </Content>

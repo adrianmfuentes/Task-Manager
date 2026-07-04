@@ -17,6 +17,7 @@ const EditProjectComp = ({ createNotification }) => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState({});
     const [touched, setTouched] = useState({});
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     // Obtener detalles del proyecto por ID
@@ -111,10 +112,14 @@ const EditProjectComp = ({ createNotification }) => {
 
     // Manejar la edición del proyecto
     const clickEdit = async () => {
+        if (loading) return;
         if (isEmpty(error)) {
+            setLoading(true);
             try {
                 const projectToSend = {
-                    ...project,
+                    title: project.name,
+                    description: project.description,
+                    subtasks: project.subtasks,
                     dateFinish: project.dateFinish ? dayjs(project.dateFinish).format('YYYY-MM-DD HH:mm:ss') : null
                 };
 
@@ -133,6 +138,8 @@ const EditProjectComp = ({ createNotification }) => {
                 }
             } catch {
                 setMessage(t('errorUpdatingProject'));
+            } finally {
+                setLoading(false);
             }
         } else {
             setMessage(t('fixErrorsMessage'));
@@ -211,6 +218,7 @@ const EditProjectComp = ({ createNotification }) => {
                         type="primary"
                         onClick={clickEdit}
                         block
+                        loading={loading}
                         disabled={isButtonDisabled}
                     >
                         {t('Edit project')}

@@ -20,6 +20,7 @@ const CreateTaskComp = ({ createNotification }) => {
     });
     const [error, setError] = useState({});
     const [touched, setTouched] = useState({});
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const checkInputErrors = useCallback(() => {
@@ -58,7 +59,9 @@ const CreateTaskComp = ({ createNotification }) => {
     };
 
     const clickCreate = async () => {
+        if (loading) return;
         if (Object.keys(error).length === 0) {
+            setLoading(true);
             try {
                 const res = await fetch(`${backendUrl}/tasks?apiKey=${localStorage.getItem("apiKey")}`, {
                     method: "POST",
@@ -75,6 +78,8 @@ const CreateTaskComp = ({ createNotification }) => {
                 }
             } catch {
                 setMessage(t("errorCreatingTask"));
+            } finally {
+                setLoading(false);
             }
         } else {
             setMessage(t("fixErrorsMessage"));
@@ -141,6 +146,7 @@ const CreateTaskComp = ({ createNotification }) => {
                         aria-label={t("createTask")}
                         onClick={clickCreate}
                         block
+                        loading={loading}
                         disabled={isButtonDisabled}
                         className="primary-button"
                     >

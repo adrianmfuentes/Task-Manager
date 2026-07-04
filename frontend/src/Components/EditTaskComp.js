@@ -18,6 +18,7 @@ const EditTaskComp = ({ createNotification }) => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState({});
     const [touched, setTouched] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const fetchTask = useCallback(async () => {
         try {
@@ -75,7 +76,9 @@ const EditTaskComp = ({ createNotification }) => {
     };
 
     const clickEdit = async () => {
+        if (loading) return;
         if (Object.keys(error).length === 0) {
+            setLoading(true);
             try {
                 const taskToSend = {
                     ...task,
@@ -97,6 +100,8 @@ const EditTaskComp = ({ createNotification }) => {
                 }
             } catch {
                 setMessage(t("errorUpdatingTask"));
+            } finally {
+                setLoading(false);
             }
         } else {
             setMessage(t("fixErrorsMessage"));
@@ -167,6 +172,7 @@ const EditTaskComp = ({ createNotification }) => {
                         type="primary"
                         onClick={clickEdit}
                         block
+                        loading={loading}
                         disabled={isButtonDisabled}
                     >
                         {t("Edit task")}

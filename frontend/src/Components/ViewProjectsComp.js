@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { backendUrl } from "../Globals";
 import { convertDateTimeToReadableFormat } from "../Utils";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, List, Checkbox, message } from "antd";
+import { Button, Card, List, Checkbox, message, Popconfirm, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, CheckOutlined } from "@ant-design/icons";
 import { useTranslation } from 'react-i18next'; // Importar useTranslation
 import '../Css/ViewProjects.css'; 
@@ -93,7 +93,7 @@ const ProjectsComp = ({ createNotification }) => {
             const res = await fetch(`${backendUrl}/projects/${id}?apiKey=${localStorage.getItem("apiKey")}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: "completed" }),
+                body: JSON.stringify({ completed: true }),
             });
 
             if (res.ok) {
@@ -124,9 +124,14 @@ const ProjectsComp = ({ createNotification }) => {
                     <List.Item>
                         <Card
                             hoverable
-                            title={project.name}
-                            aria-label={`Project: ${project.name}`}
+                            title={project.title}
+                            aria-label={`Project: ${project.title}`}
                             className="project-card"
+                            extra={
+                                <Tag color={project.completed ? 'success' : 'default'}>
+                                    {project.completed ? t("Complete") : t("pending")}
+                                </Tag>
+                            }
                         >
                             <p className="project-description">
                                 <strong>{t("Description:")}</strong> {project.description}
@@ -134,6 +139,11 @@ const ProjectsComp = ({ createNotification }) => {
                             <p className="due-date">
                                 <strong>{t("Due Date:")}</strong> {convertDateTimeToReadableFormat(project.dateFinish)}
                             </p>
+                            {project.subtasks?.length > 0 && (
+                                <p className="subtasks-progress">
+                                    <strong>{t("Progress:")}</strong> {project.subtasks.filter(s => s.completed).length}/{project.subtasks.length}
+                                </p>
+                            )}
 
                             <List
                                 size="small"
@@ -159,8 +169,9 @@ const ProjectsComp = ({ createNotification }) => {
                                     onClick={() => completeProject(project.id)}
                                     type="primary"
                                     icon={<CheckOutlined />}
-                                    aria-label={`Mark ${project.name} as completed`}
+                                    aria-label={`Mark ${project.title} as completed`}
                                     className="project-action-button"
+                                    disabled={project.completed}
                                 >
                                     {t("Complete")}
                                 </Button>
@@ -168,21 +179,27 @@ const ProjectsComp = ({ createNotification }) => {
                                 <Button
                                     onClick={() => editProject(project.id)}
                                     icon={<EditOutlined />}
-                                    aria-label={`Edit ${project.name}`}
+                                    aria-label={`Edit ${project.title}`}
                                     className="project-action-button"
                                 >
                                     {t("Edit")}
                                 </Button>
 
-                                <Button
-                                    onClick={() => deleteProject(project.id)}
-                                    icon={<DeleteOutlined />}
-                                    danger
-                                    aria-label={`Delete ${project.name}`}
-                                    className="project-action-button"
+                                <Popconfirm
+                                    title={t("confirmDeleteProject")}
+                                    onConfirm={() => deleteProject(project.id)}
+                                    okText={t("Delete")}
+                                    cancelText={t("Cancel")}
                                 >
-                                    {t("Delete")}
-                                </Button>
+                                    <Button
+                                        icon={<DeleteOutlined />}
+                                        danger
+                                        aria-label={`Delete ${project.title}`}
+                                        className="project-action-button"
+                                    >
+                                        {t("Delete")}
+                                    </Button>
+                                </Popconfirm>
                             </div>
                         </Card>
                     </List.Item>

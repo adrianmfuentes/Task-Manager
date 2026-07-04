@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { backendUrl } from "../Globals";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, List } from "antd";
+import { Button, Card, List, Popconfirm, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, CheckOutlined } from "@ant-design/icons"; 
 import { convertDateTimeToReadableFormat } from "../Utils";
 import { useTranslation } from 'react-i18next'; // Importa el hook useTranslation
@@ -114,6 +114,16 @@ const TasksComp = ({ createNotification }) => {
                             title={task.title}
                             aria-label={`Task: ${task.title}`}
                             className="task-card"
+                            extra={
+                                <>
+                                    <Tag color={task.priority === 'high' ? 'red' : task.priority === 'medium' ? 'orange' : 'green'}>
+                                        {t(task.priority)}
+                                    </Tag>
+                                    <Tag color={task.status === 'completed' ? 'success' : task.status === 'in-progress' ? 'processing' : 'default'}>
+                                        {task.status}
+                                    </Tag>
+                                </>
+                            }
                         >
                             {/* Descripción */}
                             <p className="task-description">
@@ -133,6 +143,7 @@ const TasksComp = ({ createNotification }) => {
                                     icon={<CheckOutlined />}
                                     aria-label={`Mark ${task.title} as completed`}
                                     className="task-action-button"
+                                    disabled={task.status === 'completed'}
                                 >
                                     {t("Complete")} {/* Usa la traducción */}
                                 </Button>
@@ -144,14 +155,20 @@ const TasksComp = ({ createNotification }) => {
                                 >
                                     {t("Edit")} {/* Usa la traducción */}
                                 </Button>
-                                <Button
-                                    onClick={() => deleteTask(task.id)}
-                                    icon={<DeleteOutlined />}
-                                    aria-label={`Delete ${task.title}`}
-                                    className="task-action-button delete" // Añadido la clase 'delete'
+                                <Popconfirm
+                                    title={t("confirmDeleteTask")}
+                                    onConfirm={() => deleteTask(task.id)}
+                                    okText={t("Delete")}
+                                    cancelText={t("Cancel")}
                                 >
-                                    {t("Delete")} {/* Traducción del texto */}
-                                </Button>
+                                    <Button
+                                        icon={<DeleteOutlined />}
+                                        aria-label={`Delete ${task.title}`}
+                                        className="task-action-button delete" // Añadido la clase 'delete'
+                                    >
+                                        {t("Delete")} {/* Traducción del texto */}
+                                    </Button>
+                                </Popconfirm>
                             </div>
                         </Card>
                     </List.Item>

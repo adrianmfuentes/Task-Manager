@@ -33,13 +33,7 @@ Setup Database
 
 Configure Environment Variables.
 
-Create a .env file in the root directory with the following details:
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASSWORD=yourpassword
-    DB_NAME=task_manager
-    DB_PORT=3306
-    JWT_SECRET=your_jwt_secret
+Copy `.env.example` to `.env` and fill in real values (see that file for the full list: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, JWT_SECRET, JWT_EXPIRES_IN, CORS_ORIGIN). `JWT_SECRET` is required in production and should be a long random string.
 
 
 3. **Start the Server**
@@ -107,43 +101,15 @@ In case of an error:
 
 
 7. **🗄️ Database Schema**
-Users Table
-    CREATE TABLE users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
-    );
 
-Tasks Table
-    CREATE TABLE tasks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        description TEXT,
-        status ENUM('pending', 'completed') DEFAULT 'pending',
-        priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
-        due_date DATE,
-        FOREIGN KEY (user_id) REFERENCES users(id)
-    );
+See `myDatabase.sql` for the canonical, up-to-date schema (also used to auto-initialize the database in Docker). Summary:
 
-Projects Table
-    CREATE TABLE projects (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        description TEXT,
-        finishDate DATE,
-        FOREIGN KEY (user_id) REFERENCES users(id)
-    );
+- `users(id, email UNIQUE, password)` - password is a bcrypt hash, never plaintext.
+- `tasks(id, user_id, title, description, status ENUM('pending','in-progress','completed'), priority ENUM('low','medium','high'), dateFinish)`
+- `projects(id, user_id, title, description, dateFinish, completed)`
+- `subtasks(id, project_id, task, completed)`
 
-Subtasks Table
-    CREATE TABLE subtasks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        project_id INT NOT NULL,
-        task VARCHAR(255) NOT NULL,
-        completed BOOLEAN DEFAULT FALSE,
-        FOREIGN KEY (project_id) REFERENCES projects(id)
-    );
+All foreign keys cascade on delete.
 
 
 8. **🔑 Authentication**

@@ -15,6 +15,7 @@ const CreateUserComp = (props) => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,8 +44,9 @@ const CreateUserComp = (props) => {
 
   // Handle user creation on button click
   const clickCreate = async () => {
-    if (!validateInputs(email, password)) return; // Check for errors before submission
+    if (!validateInputs(email, password) || loading) return; // Check for errors before submission
 
+    setLoading(true);
     try {
       const res = await fetch(`${backendUrl}/users`, {
         method: "POST",
@@ -52,18 +54,21 @@ const CreateUserComp = (props) => {
         body: JSON.stringify({ email, password }),
       });
 
+      const jsonData = await res.json();
+
       if (res.ok) {
         createNotification("success", t("userCreated"));
         navigate("/login");
       } else {
-        const jsonData = await res.json();
-        const errorMessages = Array.isArray(jsonData.errors)
-          ? jsonData.errors.map((element) => element.error).join(" ")
-          : jsonData.errors;
+        const errorMessages = Array.isArray(jsonData.error)
+          ? jsonData.error.join(" ")
+          : jsonData.error;
         setMessage(errorMessages);
       }
     } catch (error) {
       setMessage(t("errorCreatingUser"));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,7 +108,8 @@ const CreateUserComp = (props) => {
             type="primary"
             onClick={clickCreate}
             block
-            disabled={Object.keys(error).length > 0} // Disable if there are validation errors
+            loading={loading}
+            disabled={Object.keys(error).length > 0 || !email || !password} // Disable if there are validation errors
             className="primary-button" // Clase para el botón principal
           >
             {t("Register")}

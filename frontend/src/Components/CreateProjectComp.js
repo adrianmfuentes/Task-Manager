@@ -20,6 +20,7 @@ const CreateProjectComp = ({ createNotification }) => {
     });
     const [error, setError] = useState({});
     const [touched, setTouched] = useState({});
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const checkInputErrors = useCallback(() => {
@@ -83,7 +84,9 @@ const CreateProjectComp = ({ createNotification }) => {
     };
 
     const clickCreate = async () => {
+        if (loading) return;
         if (isEmpty(error)) {
+            setLoading(true);
             try {
                 const res = await fetch(`${backendUrl}/projects?apiKey=${localStorage.getItem("apiKey")}`, {
                     method: "POST",
@@ -99,6 +102,8 @@ const CreateProjectComp = ({ createNotification }) => {
                 }
             } catch {
                 setMessage(t("errorCreatingProject"));
+            } finally {
+                setLoading(false);
             }
         } else {
             setMessage(t("fixErrorsMessage"));
@@ -173,6 +178,7 @@ const CreateProjectComp = ({ createNotification }) => {
                         type="primary"
                         onClick={clickCreate}
                         block
+                        loading={loading}
                         disabled={checkButtonDisabled()}
                         className="primary-button"
                     >
